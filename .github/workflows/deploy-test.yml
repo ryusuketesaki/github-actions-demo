@@ -1,0 +1,19 @@
+name: 'Deploy on merge to master'
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  deploy:
+    if: |
+      github.event.pull_request.merged == true
+      && !contains(github.event.pull_request.labels.*.name, 'skip_release')
+      && github.event.pull_request.base.ref == 'master'
+    runs-on: ubuntu-latest
+    steps:
+    - name: Echo pipeline information
+      run: |
+        echo "Deploying pipeline: ${{ inputs.pipeline-name }}"
+        echo "Target AWS Account ID: ${{ secrets.aws-account-id }}"
