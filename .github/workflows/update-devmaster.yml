@@ -1,0 +1,27 @@
+name: Update devmaster branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  update-devmaster:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Update devmaster branch
+        run: |
+          git fetch origin
+          git checkout -B devmaster origin/main
+          git push -f origin devmaster
